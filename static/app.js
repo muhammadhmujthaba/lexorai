@@ -1,33 +1,54 @@
-const chatBox = document.getElementById("chat-box");
-const input = document.getElementById("user-input");
-const sendBtn = document.getElementById("send-btn");
+const chatBox = document.getElementById("chat");
+const input = document.getElementById("userInput");
+const sendBtn = document.getElementById("sendBtn");
+const imageBtn = document.getElementById("imageBtn");
 
-function addMessage(text, sender) {
-    const msg = document.createElement("div");
-    msg.classList.add("message", sender);
-    msg.textContent = text;
-    chatBox.appendChild(msg);
-    chatBox.scrollTop = chatBox.scrollHeight;
-}
+// Send text message to Groq
+sendBtn.onclick = async () => {
+    const message = input.value.trim();
+    if (!message) return;
 
-async function sendMessage() {
-    const text = input.value.trim();
-    if (!text) return;
-
-    addMessage(text, "user");
     input.value = "";
+    addMessage("You", message);
 
-    const response = await fetch("/api/chat", {
+    const response = await fetch("/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, history: [] })
+        body: JSON.stringify({ message })
     });
 
     const data = await response.json();
-    addMessage(data.reply, "ai");
-}
+    addMessage("Lexor", data.reply);
+};
 
-sendBtn.addEventListener("click", sendMessage);
-input.addEventListener("keypress", e => {
-    if (e.key === "Enter") sendMessage();
-});
+// Generate image using Fal.ai
+imageBtn.onclick = async () => {
+    const prompt = input.value.trim();
+    if (!prompt) return;
+
+    input.value = "";
+    addMessage("You (Image Prompt)", prompt);
+
+    const response = await fetch("/generate-image", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt })
+    });
+
+    const data = await response.json();
+
+    const img = document.createElement("img");
+    img.src = data.image_url;
+    img.className = "generated-image";
+
+    chatBox.appendChild(img);
+};
+
+// Add message to chat window
+function addMessage(sender, text) {
+    const div = document.createElement("div");
+    div.className = "message";
+    div.innerHTML = `<strong>${sender}:</strong> ${text}`;
+    chatBox.appendChild(div);
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
