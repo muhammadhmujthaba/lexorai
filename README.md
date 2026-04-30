@@ -1,0 +1,2 @@
+# lexorai
+Lexor AI
