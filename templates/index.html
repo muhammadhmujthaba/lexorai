@@ -1,22 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lexor AI</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-    <div class="chat-container">
-        <div id="chat-box" class="chat-box"></div>
+<div id="chat"></div>
 
-        <div class="input-area">
-            <input id="user-input" type="text" placeholder="Send a message..." autocomplete="off">
-            <button id="send-btn">Send</button>
-        </div>
-    </div>
+<input id="userInput" type="text" placeholder="Type something...">
+<button id="sendBtn">Send</button>
+<button id="imageBtn">Generate Image</button>
 
-    <script src="/static/app.js"></script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

@@ -32,30 +32,4 @@ def index():
 # CHAT ROUTE (TEXT)
 # -----------------------------
 @app.route("/chat", methods=["POST"])
-def chat():
-    data = request.json
-    user_message = data.get("message", "")
-
-    completion = client.chat.completions.create(
-        model="llama3-8b-8192",
-        messages=[{"role": "user", "content": user_message}]
-    )
-
-    reply = completion.choices[0].message["content"]
-    return jsonify({"reply": reply})
-
-# -----------------------------
-# IMAGE GENERATION ROUTE
-# -----------------------------
-@app.route("/generate-image", methods=["POST"])
-def generate_image_route():
-    data = request.json
-    prompt = data.get("prompt", "")
-    url = generate_image(prompt)
-    return jsonify({"image_url": url})
-
-# -----------------------------
-# RUN APP
-# -----------------------------
-if __name__ == "__main__":
-    app.run(debug=True)
+def chat
